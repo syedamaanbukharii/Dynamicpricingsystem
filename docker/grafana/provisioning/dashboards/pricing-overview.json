@@ -1,0 +1,46 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "graphTooltip": 0,
+  "title": "Dynamic Pricing Overview",
+  "uid": "pricing-overview",
+  "version": 1,
+  "schemaVersion": 39,
+  "time": { "from": "now-6h", "to": "now" },
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "HTTP request rate",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        { "expr": "sum(rate(pricing_http_requests_total[5m])) by (endpoint)", "legendFormat": "{{endpoint}}" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Request latency p95 (s)",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [
+        { "expr": "histogram_quantile(0.95, sum(rate(pricing_http_request_duration_seconds_bucket[5m])) by (le, endpoint))", "legendFormat": "{{endpoint}}" }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Predictions (total)",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 8 },
+      "targets": [ { "expr": "sum(pricing_predictions_total)" } ]
+    },
+    {
+      "type": "stat",
+      "title": "ETL runs",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 8 },
+      "targets": [ { "expr": "sum(pricing_etl_runs_total) by (status)", "legendFormat": "{{status}}" } ]
+    },
+    {
+      "type": "stat",
+      "title": "Training runs",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 8 },
+      "targets": [ { "expr": "sum(pricing_training_runs_total) by (status)", "legendFormat": "{{status}}" } ]
+    }
+  ]
+}

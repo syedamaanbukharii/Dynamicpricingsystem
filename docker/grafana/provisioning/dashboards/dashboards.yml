@@ -1,0 +1,12 @@
+# Tell Grafana to load dashboards from the provisioned folder.
+apiVersion: 1
+
+providers:
+  - name: "Dynamic Pricing"
+    orgId: 1
+    folder: "Dynamic Pricing"
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /etc/grafana/provisioning/dashboards

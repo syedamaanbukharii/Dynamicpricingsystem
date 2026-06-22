@@ -1,0 +1,45 @@
+# Declarative competitor scrape targets.
+#
+# Selectors live here (never in code) so operators can add sources or fix
+# breakage without a deployment. Each target renders its `search_url_template`
+# with an ISO `{stay_date}` and extracts one listing per `selectors.listing`,
+# reading the room name and price with the nested selectors.
+#
+# The URLs below are illustrative placeholders. Replace them with the real OTA
+# or hotel endpoints you are authorized to crawl, and confirm each site's terms
+# of service and robots.txt before enabling.
+
+targets:
+  - name: grand_plaza_direct
+    competitor: Grand Plaza
+    base_url: "https://example-grand-plaza.com"
+    search_url_template: "https://example-grand-plaza.com/rooms?date={stay_date}"
+    currency: USD
+    requires_javascript: true
+    selectors:
+      listing: "div.room-card"
+      room_name: ".room-card__title"
+      price: ".room-card__price"
+      availability: ".room-card__availability"
+
+  - name: city_inn_ota
+    competitor: City Inn
+    base_url: "https://example-ota.com"
+    search_url_template: "https://example-ota.com/hotels/city-inn?checkin={stay_date}"
+    currency: USD
+    requires_javascript: true
+    selectors:
+      listing: "li[data-room]"
+      room_name: "[data-room-name]"
+      price: "[data-price]"
+
+  - name: harbor_hotel_static
+    competitor: Harbor Hotel
+    base_url: "https://example-harbor-hotel.com"
+    search_url_template: "https://example-harbor-hotel.com/availability/{stay_date}"
+    currency: USD
+    requires_javascript: false
+    selectors:
+      listing: "tr.rate-row"
+      room_name: "td.room"
+      price: "td.price"

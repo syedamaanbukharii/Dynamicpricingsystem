@@ -1,0 +1,107 @@
+# Full local stack: API + PostgreSQL + Redis + Prometheus + Grafana + MLflow.
+# Usage: `docker compose up -d` then open http://localhost:8000/docs
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dynamic-pricing-system:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      ENVIRONMENT: development
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+      API_KEY: ${API_KEY:-change-me-in-production}
+      LOG_JSON: "true"
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: pricing
+      POSTGRES_PASSWORD: pricing
+      POSTGRES_DB: pricing
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      LLM_ENABLED: ${LLM_ENABLED:-false}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: pricing
+      POSTGRES_PASSWORD: pricing
+      POSTGRES_DB: pricing
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pricing -d pricing"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    depends_on:
+      - app
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - promdata:/prometheus
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    depends_on:
+      - prometheus
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafanadata:/var/lib/grafana
+    restart: unless-stopped
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.18.0
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri /mlruns
+      --default-artifact-root /mlruns
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflowdata:/mlruns
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  redisdata:
+  promdata:
+  grafanadata:
+  mlflowdata:
