@@ -3,7 +3,7 @@
 A production-grade platform that recommends **revenue-maximizing nightly room
 prices**. It combines an **XGBoost** demand model with a deterministic,
 rule-aware pricing engine, and uses Large Language Models **only** for
-unstructured-data cleaning, normalization, and natural-language explanations —
+unstructured-data cleaning, normalization, and natural-language explanations
 **never** for the numeric price decision.
 
 > Clone it, generate sample data, train a model, and get explainable price
