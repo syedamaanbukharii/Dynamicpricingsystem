@@ -5,10 +5,11 @@ from __future__ import annotations
 from datetime import UTC, date, datetime, timedelta
 
 import pytest
+from pydantic import ValidationError as PydanticValidationError
+
 from app.schemas.booking import BookingRecord, OccupancySnapshot
 from app.schemas.common import RoomType
 from app.schemas.pricing import BusinessRules, PriceRecommendationRequest
-from pydantic import ValidationError as PydanticValidationError
 
 
 def test_booking_rejects_stay_before_booking() -> None:

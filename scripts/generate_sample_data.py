@@ -19,10 +19,10 @@ import json
 from pathlib import Path
 
 import pandas as pd
+
 from app.config import get_settings
 from app.feature_engineering.defaults import default_events, default_holidays
 from app.utils.logging import configure_logging, get_logger
-
 from scripts.sample_data import (
     generate_raw_competitor_listings,
     generate_training_frame,

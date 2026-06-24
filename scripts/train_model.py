@@ -17,7 +17,6 @@ from pathlib import Path
 from app.config import get_settings
 from app.services.training_service import train_from_file
 from app.utils.logging import configure_logging, get_logger
-
 from scripts.sample_data import generate_training_frame
 
 logger = get_logger("ml")

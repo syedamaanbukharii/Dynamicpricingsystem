@@ -69,8 +69,9 @@ def trained_model_dir(tmp_path_factory, sample_frame) -> Path:
 @pytest.fixture
 def client():
     """A FastAPI TestClient against a freshly built app (heuristic model)."""
-    from app.api.main import create_app
     from fastapi.testclient import TestClient
+
+    from app.api.main import create_app
 
     app = create_app()
     with TestClient(app) as test_client:

@@ -13,6 +13,7 @@ import random
 from datetime import date, timedelta
 
 import pandas as pd
+
 from app.feature_engineering.calendars import EventCalendar, HolidayCalendar
 from app.feature_engineering.defaults import default_events, default_holidays
 from app.schemas.common import RoomType

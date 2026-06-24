@@ -72,8 +72,9 @@ def test_request_id_echoed(client) -> None:
 
 def test_auth_enforced_in_production(monkeypatch) -> None:
     """In production, a missing API key is rejected with 401."""
-    from app.config import get_settings
     from fastapi.testclient import TestClient
+
+    from app.config import get_settings
 
     monkeypatch.setenv("ENVIRONMENT", "production")
     get_settings.cache_clear()

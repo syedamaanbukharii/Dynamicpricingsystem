@@ -6,6 +6,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 import pytest
+
 from app.config import get_settings
 from app.scraping.base import BaseScraper, ScrapeStateStore
 from app.scraping.targets import ScrapeSelectors, ScrapeTarget

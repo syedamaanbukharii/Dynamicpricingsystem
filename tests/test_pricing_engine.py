@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import date, timedelta
 
 import pytest
+
 from app.feature_engineering.defaults import default_feature_builder
 from app.inference.heuristic import HeuristicDemandModel
 from app.pricing.engine import PricingEngine
