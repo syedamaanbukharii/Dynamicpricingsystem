@@ -8,7 +8,7 @@ unstructured-data cleaning, normalization, and natural-language explanations
 
 > Clone it, generate sample data, train a model, and get explainable price
 > recommendations from a REST API in a few minutes. No external services are
-> required to run locally — optional dependencies degrade gracefully.
+> required to run locally optional dependencies degrade gracefully.
 
 ---
 
