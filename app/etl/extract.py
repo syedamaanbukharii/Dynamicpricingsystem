@@ -158,9 +158,7 @@ class FileDataSource(DataSource):
 
     def read_observations(self) -> pd.DataFrame:
         """Read the consolidated training observation frame from the raw directory."""
-        return self._read_csv(
-            OBSERVATIONS_FILE, parse_dates=["stay_date", "booking_date"]
-        )
+        return self._read_csv(OBSERVATIONS_FILE, parse_dates=["stay_date", "booking_date"])
 
     def read_competitor_listings(self) -> list[dict[str, Any]]:
         """Read raw competitor listings (JSON) from the raw directory."""

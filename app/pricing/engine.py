@@ -125,21 +125,13 @@ class PricingEngine:
                 details={"low": search_low, "high": search_high},
             )
 
-        coarse_price, _, _ = self._search(
-            request, search_low, search_high, self.coarse_points
-        )
+        coarse_price, _, _ = self._search(request, search_low, search_high, self.coarse_points)
         step = (search_high - search_low) / (self.coarse_points - 1)
         fine_low = max(search_low, coarse_price - step)
         fine_high = min(search_high, coarse_price + step)
-        optimal_price, _, _ = self._search(
-            request, fine_low, fine_high, self.refine_points
-        )
+        optimal_price, _, _ = self._search(request, fine_low, fine_high, self.refine_points)
 
-        occupancy = (
-            request.rooms_sold / request.inventory_total
-            if request.inventory_total
-            else 0.0
-        )
+        occupancy = request.rooms_sold / request.inventory_total if request.inventory_total else 0.0
         rule_result = apply_business_rules(
             optimal_price,
             rules,
@@ -147,9 +139,7 @@ class PricingEngine:
             occupancy=occupancy,
         )
 
-        final_rooms, final_revenue = self._expected_revenue(
-            request, rule_result.price
-        )
+        final_rooms, final_revenue = self._expected_revenue(request, rule_result.price)
         expected_occupancy = (
             final_rooms / request.inventory_total if request.inventory_total else 0.0
         )
@@ -190,21 +180,13 @@ class PricingEngine:
         request: PriceRecommendationRequest, stats, optimal_price: float
     ) -> dict[str, float]:
         """Compact, human-meaningful subset of features for the explanation layer."""
-        occupancy = (
-            request.rooms_sold / request.inventory_total
-            if request.inventory_total
-            else 0.0
-        )
+        occupancy = request.rooms_sold / request.inventory_total if request.inventory_total else 0.0
         return {
             "occupancy": round(occupancy, 4),
-            "rooms_remaining": float(
-                max(request.inventory_total - request.rooms_sold, 0)
-            ),
+            "rooms_remaining": float(max(request.inventory_total - request.rooms_sold, 0)),
             "competitor_median": round(stats.median, 2),
             "competitor_spread": round(stats.spread, 2),
             "booking_velocity": round(request.booking_velocity or 0.0, 3),
-            "lead_time_days": float(
-                max((request.stay_date - request.as_of_date).days, 0)
-            ),
+            "lead_time_days": float(max((request.stay_date - request.as_of_date).days, 0)),
             "model_optimal_price": round(optimal_price, 2),
         }

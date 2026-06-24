@@ -14,9 +14,7 @@ from app.scraping.targets import (
 )
 
 
-def build_scraper(
-    target: ScrapeTarget, settings: Settings | None = None
-) -> BaseScraper:
+def build_scraper(target: ScrapeTarget, settings: Settings | None = None) -> BaseScraper:
     """Return an appropriate scraper backend for the target.
 
     JavaScript-dependent targets use the Playwright renderer; static targets use

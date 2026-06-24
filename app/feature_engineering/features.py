@@ -53,8 +53,13 @@ class FeatureBuilder:
         clean = [float(r) for r in rates if r is not None and r > 0]
         if not clean:
             return CompetitorPriceStats(
-                room_type=room_type, stay_date=stay_date, sample_size=0,
-                median=0.0, minimum=0.0, maximum=0.0, mean=0.0,
+                room_type=room_type,
+                stay_date=stay_date,
+                sample_size=0,
+                median=0.0,
+                minimum=0.0,
+                maximum=0.0,
+                mean=0.0,
             )
         return CompetitorPriceStats(
             room_type=room_type,
@@ -82,9 +87,7 @@ class FeatureBuilder:
         return float(max(0.0, min(1.0, score)))
 
     # -- Single-row (inference) -----------------------------------------
-    def build_features(
-        self, request: PriceRecommendationRequest, price: float
-    ) -> PricingFeatures:
+    def build_features(self, request: PriceRecommendationRequest, price: float) -> PricingFeatures:
         """Build a :class:`PricingFeatures` row for one candidate ``price``."""
         stay = request.stay_date
         lead_time = max((stay - request.as_of_date).days, 0)
@@ -92,21 +95,13 @@ class FeatureBuilder:
         rooms_remaining = max(request.inventory_total - request.rooms_sold, 0)
 
         is_holiday = (
-            request.is_holiday
-            if request.is_holiday is not None
-            else self.holidays.is_holiday(stay)
+            request.is_holiday if request.is_holiday is not None else self.holidays.is_holiday(stay)
         )
-        is_event = (
-            request.is_event
-            if request.is_event is not None
-            else self.events.is_event(stay)
-        )
+        is_event = request.is_event if request.is_event is not None else self.events.is_event(stay)
         event_score = self.events.event_score(stay)
         days_to_holiday = self.holidays.days_to_next_holiday(stay)
 
-        stats = self.competitor_stats(
-            request.competitor_rates or [], request.room_type, stay
-        )
+        stats = self.competitor_stats(request.competitor_rates or [], request.room_type, stay)
         booking_velocity = request.booking_velocity or 0.0
         demand_score = (
             request.demand_score
@@ -158,11 +153,7 @@ class FeatureBuilder:
         """
         out = df.copy()
         stay = pd.to_datetime(out["stay_date"])
-        booking = (
-            pd.to_datetime(out["booking_date"])
-            if "booking_date" in out.columns
-            else stay
-        )
+        booking = pd.to_datetime(out["booking_date"]) if "booking_date" in out.columns else stay
 
         out["lead_time_days"] = (stay - booking).dt.days.clip(lower=0)
         out["day_of_week"] = stay.dt.dayofweek
@@ -180,9 +171,7 @@ class FeatureBuilder:
 
         inv = out["inventory_total"].replace(0, np.nan)
         out["current_occupancy"] = (out["rooms_sold"] / inv).fillna(0.0).clip(0, 1)
-        out["rooms_remaining"] = (
-            (out["inventory_total"] - out["rooms_sold"]).clip(lower=0)
-        )
+        out["rooms_remaining"] = (out["inventory_total"] - out["rooms_sold"]).clip(lower=0)
 
         for col, default in (
             ("competitor_median", 0.0),
@@ -195,19 +184,13 @@ class FeatureBuilder:
                 out[col] = default
             out[col] = out[col].fillna(default)
 
-        out["competitor_spread"] = (
-            (out["competitor_max"] - out["competitor_min"]).clip(lower=0)
-        )
+        out["competitor_spread"] = (out["competitor_max"] - out["competitor_min"]).clip(lower=0)
         comp_median = out["competitor_median"].replace(0, np.nan)
-        out["price_to_comp_median"] = (
-            (out["price"] / comp_median).fillna(1.0)
-        )
+        out["price_to_comp_median"] = (out["price"] / comp_median).fillna(1.0)
 
         if "previous_price" in out.columns:
             prev = out["previous_price"].replace(0, np.nan)
-            out["recent_price_change_pct"] = (
-                ((out["price"] - prev) / prev).fillna(0.0)
-            )
+            out["recent_price_change_pct"] = ((out["price"] - prev) / prev).fillna(0.0)
         else:
             out["recent_price_change_pct"] = 0.0
 

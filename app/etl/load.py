@@ -53,9 +53,7 @@ def _write_frame(frame: pd.DataFrame, path: Path) -> str:
     except Exception as exc:
         csv_path = path.with_suffix(".csv")
         frame.to_csv(csv_path, index=False)
-        logger.warning(
-            "parquet unavailable ({}); wrote CSV fallback -> {}", exc, csv_path
-        )
+        logger.warning("parquet unavailable ({}); wrote CSV fallback -> {}", exc, csv_path)
         return str(csv_path)
 
 

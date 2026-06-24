@@ -127,24 +127,18 @@ class CompetitorCleaningAgent:
             if listing.is_advertisement or listing.raw_room_name.lower().startswith(
                 ("sponsored", "ad:", "advertisement")
             ):
-                result.dropped.append(
-                    {"reason": "advertisement", "raw": listing.raw_room_name}
-                )
+                result.dropped.append({"reason": "advertisement", "raw": listing.raw_room_name})
                 continue
 
             parsed = self._parse_price(listing.raw_price)
             if parsed is None:
-                result.dropped.append(
-                    {"reason": "unparseable_price", "raw": listing.raw_price}
-                )
+                result.dropped.append({"reason": "unparseable_price", "raw": listing.raw_price})
                 continue
             price, currency = parsed
 
             stay = listing.stay_date or default_stay_date
             if stay is None:
-                result.dropped.append(
-                    {"reason": "missing_stay_date", "raw": listing.raw_room_name}
-                )
+                result.dropped.append({"reason": "missing_stay_date", "raw": listing.raw_room_name})
                 continue
 
             room_type = self._matcher.match(listing.raw_room_name)
@@ -158,9 +152,7 @@ class CompetitorCleaningAgent:
                 round(price, 2),
             )
             if dedup_key in seen:
-                result.dropped.append(
-                    {"reason": "duplicate", "raw": listing.raw_room_name}
-                )
+                result.dropped.append({"reason": "duplicate", "raw": listing.raw_room_name})
                 continue
             seen.add(dedup_key)
 
@@ -177,7 +169,5 @@ class CompetitorCleaningAgent:
                 )
             )
 
-        logger.info(
-            "competitor cleaning: kept={} dropped={}", result.kept, result.removed
-        )
+        logger.info("competitor cleaning: kept={} dropped={}", result.kept, result.removed)
         return result

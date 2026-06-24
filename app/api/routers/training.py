@@ -46,9 +46,7 @@ def _run_training_job(
 ) -> None:
     """Background worker that trains a model and optionally hot-reloads it."""
     try:
-        result = train_from_file(
-            data_path, settings=settings, val_fraction=val_fraction
-        )
+        result = train_from_file(data_path, settings=settings, val_fraction=val_fraction)
         logger.info(
             "background training complete version={} metrics={}",
             result.version,
@@ -83,6 +81,4 @@ def trigger_training(
         pricing,
     )
     logger.info("accepted training job {} for {}", job_id, request.data_path)
-    return JobAcceptedResponse(
-        job_id=job_id, job_type="training", detail="Model training started."
-    )
+    return JobAcceptedResponse(job_id=job_id, job_type="training", detail="Model training started.")

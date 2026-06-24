@@ -25,11 +25,7 @@ class HeuristicDemandModel(DemandModel):
         return "heuristic-1.0"
 
     def predict_rooms_sold(self, features: PricingFeatures) -> float:  # noqa: D102
-        reference = (
-            features.competitor_median
-            if features.competitor_median > 0
-            else features.price
-        )
+        reference = features.competitor_median if features.competitor_median > 0 else features.price
         ratio = features.price / reference if reference > 0 else 1.0
         base_fraction = 0.35 + 0.5 * features.demand_score
         fraction = base_fraction * math.exp(-self._elasticity * (ratio - 1.0))

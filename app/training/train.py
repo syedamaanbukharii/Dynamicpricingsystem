@@ -48,9 +48,7 @@ class TrainingResult:
     feature_importance: dict[str, float]
     n_train: int
     n_val: int
-    trained_at: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
-    )
+    trained_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
 
 def _suggest_params(trial: optuna.Trial, seed: int) -> dict[str, object]:

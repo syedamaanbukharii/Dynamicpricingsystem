@@ -27,9 +27,7 @@ class ExplanationAgent:
         self._llm = llm
 
     @staticmethod
-    def _driver_lines(
-        request: PriceRecommendationRequest, decision: PricingDecision
-    ) -> list[str]:
+    def _driver_lines(request: PriceRecommendationRequest, decision: PricingDecision) -> list[str]:
         """Build the structured, factual driver bullet points."""
         drivers = decision.feature_drivers
         lines = [
@@ -67,11 +65,7 @@ class ExplanationAgent:
             if decision.price_change_pct is not None
             else ""
         )
-        override = (
-            " A manual override was applied."
-            if decision.manual_override_applied
-            else ""
-        )
+        override = " A manual override was applied." if decision.manual_override_applied else ""
         summary = (
             f"Recommended {decision.recommended_price:.2f} {currency.value} for "
             f"{request.room_type.value} on {request.stay_date.isoformat()}{change}. "

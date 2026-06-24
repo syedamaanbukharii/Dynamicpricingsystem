@@ -51,9 +51,7 @@ class PricingService:
         self._engine = PricingEngine(self._model, self._feature_builder)
         self._explainer = ExplanationAgent(get_llm_client(self._settings))
         set_model_version(self._model.version)
-        logger.info(
-            "pricing service ready (model_version={})", self._model.version
-        )
+        logger.info("pricing service ready (model_version={})", self._model.version)
 
     @property
     def model_version(self) -> str:
@@ -103,9 +101,7 @@ class PricingService:
             )
         return response
 
-    def recommend(
-        self, request: PriceRecommendationRequest
-    ) -> PriceRecommendationResponse:
+    def recommend(self, request: PriceRecommendationRequest) -> PriceRecommendationResponse:
         """Produce a full price recommendation for a single request.
 
         Args:
@@ -119,8 +115,7 @@ class PricingService:
         decision = self._engine.recommend(request, rules)
         record_prediction(request.room_type.value, decision.model_version)
         logger.info(
-            "recommended price hotel={} room={} stay={} price={:.2f} "
-            "(optimal={:.2f}, model={})",
+            "recommended price hotel={} room={} stay={} price={:.2f} " "(optimal={:.2f}, model={})",
             request.hotel_id,
             request.room_type.value,
             request.stay_date.isoformat(),

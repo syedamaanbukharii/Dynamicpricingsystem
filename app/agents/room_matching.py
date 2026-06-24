@@ -84,9 +84,7 @@ class RoomMatcher:
 
     def _rule_match(self, normalized: str) -> RoomType:
         """Deterministic keyword match; returns ``OTHER`` when inconclusive."""
-        tier = next(
-            (t for kw, t in _TIER_KEYWORDS.items() if kw in normalized), None
-        )
+        tier = next((t for kw, t in _TIER_KEYWORDS.items() if kw in normalized), None)
         bed = next((b for kw, b in _BED_KEYWORDS.items() if kw in normalized), None)
 
         if tier == "executive":
@@ -116,10 +114,7 @@ class RoomMatcher:
                     "You normalize hotel room names into a fixed vocabulary. "
                     f"Choose exactly one of: {options}."
                 ),
-                user=(
-                    f'Room name: "{raw_name}". '
-                    'Return {"room_type": "<ONE_OF_THE_OPTIONS>"}.'
-                ),
+                user=(f'Room name: "{raw_name}". ' 'Return {"room_type": "<ONE_OF_THE_OPTIONS>"}.'),
             )
             value = str(payload.get("room_type", "")).strip().upper()
             return RoomType(value)

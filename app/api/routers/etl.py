@@ -60,6 +60,4 @@ def trigger_etl(
         _run_etl_job, request.default_stay_date, request.persist_to_db, settings
     )
     logger.info("accepted ETL job {}", job_id)
-    return JobAcceptedResponse(
-        job_id=job_id, job_type="etl", detail="ETL pipeline started."
-    )
+    return JobAcceptedResponse(job_id=job_id, job_type="etl", detail="ETL pipeline started.")

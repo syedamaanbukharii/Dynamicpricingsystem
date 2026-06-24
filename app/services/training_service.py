@@ -77,9 +77,7 @@ def train_from_frame(
         record_training("failure")
         if isinstance(exc, TrainingError):
             raise
-        raise TrainingError(
-            "Model training failed.", details={"error": str(exc)}
-        ) from exc
+        raise TrainingError("Model training failed.", details={"error": str(exc)}) from exc
 
     record_training("success")
     logger.info(

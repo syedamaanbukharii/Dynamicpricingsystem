@@ -101,8 +101,14 @@ def generate_raw_competitor_listings(seed: int = 7) -> list[dict[str, object]]:
     rng = random.Random(seed)
     today = date.today()
     names = [
-        "Deluxe King Room", "King Deluxe", "Premium King Roo", "DELUXE KING SUITE",
-        "Standard Queen", "Queen Standard Room", "Std. Queen", "Sponsored: Best Deal!",
+        "Deluxe King Room",
+        "King Deluxe",
+        "Premium King Roo",
+        "DELUXE KING SUITE",
+        "Standard Queen",
+        "Queen Standard Room",
+        "Std. Queen",
+        "Sponsored: Best Deal!",
     ]
     listings: list[dict[str, object]] = [
         {

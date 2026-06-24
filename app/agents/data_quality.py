@@ -57,9 +57,7 @@ class QualityReport:
     @property
     def is_ok(self) -> bool:
         """True when no warning- or error-severity issues are present."""
-        return not any(
-            i.severity in {Severity.WARNING, Severity.ERROR} for i in self.issues
-        )
+        return not any(i.severity in {Severity.WARNING, Severity.ERROR} for i in self.issues)
 
     def to_dict(self) -> dict[str, object]:
         """Serialize the report for API responses or logging."""
@@ -125,11 +123,7 @@ class DataQualityAgent:
             )
 
     def _check_prices(self, rates: list[CompetitorRate], report: QualityReport) -> None:
-        invalid = [
-            r.raw_room_name
-            for r in rates
-            if r.price <= 0 or r.price > self._max_price
-        ]
+        invalid = [r.raw_room_name for r in rates if r.price <= 0 or r.price > self._max_price]
         if invalid:
             report.issues.append(
                 QualityIssue(
@@ -165,9 +159,9 @@ class DataQualityAgent:
     def _check_currency(rates: list[CompetitorRate], report: QualityReport) -> None:
         by_group: dict[tuple[str, str], set[str]] = {}
         for r in rates:
-            by_group.setdefault(
-                (r.competitor, r.stay_date.isoformat()), set()
-            ).add(r.currency.value)
+            by_group.setdefault((r.competitor, r.stay_date.isoformat()), set()).add(
+                r.currency.value
+            )
         mixed = [f"{c}@{d}" for (c, d), cur in by_group.items() if len(cur) > 1]
         if mixed:
             report.issues.append(
@@ -187,9 +181,7 @@ class DataQualityAgent:
         future_scrapes = [
             r.raw_room_name for r in rates if r.scraped_at > now + timedelta(minutes=5)
         ]
-        stale_stays = [
-            r.raw_room_name for r in rates if r.stay_date < today - timedelta(days=1)
-        ]
+        stale_stays = [r.raw_room_name for r in rates if r.stay_date < today - timedelta(days=1)]
         if future_scrapes:
             report.issues.append(
                 QualityIssue(

@@ -78,9 +78,7 @@ async def scrape_and_clean(
         logger.warning("no scrape targets selected/enabled")
         return ScrapeServiceResult()
 
-    state_store = ScrapeStateStore(
-        Path(settings.processed_data_dir) / "scrape_state.json"
-    )
+    state_store = ScrapeStateStore(Path(settings.processed_data_dir) / "scrape_state.json")
 
     result = ScrapeServiceResult()
     raw_listings: list[RawCompetitorListing] = []

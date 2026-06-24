@@ -53,9 +53,7 @@ class Crawl4AIScraper(BaseScraper):
     async def __aexit__(self, *exc: object) -> None:
         """Stop the Crawl4AI crawler."""
         if self._crawler is not None:
-            close = getattr(self._crawler, "close", None) or getattr(
-                self._crawler, "stop", None
-            )
+            close = getattr(self._crawler, "close", None) or getattr(self._crawler, "stop", None)
             if close is not None:
                 await close()
             self._crawler = None

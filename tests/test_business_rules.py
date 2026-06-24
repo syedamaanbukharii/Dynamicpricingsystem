@@ -23,9 +23,7 @@ def test_hard_ceiling_enforced() -> None:
 
 def test_margin_floor_enforced() -> None:
     """The floor never drops below the variable-cost margin floor."""
-    rules = BusinessRules(
-        min_rate=10, max_rate=400, variable_cost_per_room=100, min_margin_pct=0.2
-    )
+    rules = BusinessRules(min_rate=10, max_rate=400, variable_cost_per_room=100, min_margin_pct=0.2)
     result = apply_business_rules(20.0, rules, previous_price=None, occupancy=0.5)
     # margin floor = 100 * 1.2 = 120
     assert result.price >= 120

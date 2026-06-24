@@ -70,9 +70,7 @@ class ScrapeConfig(BaseModel):
 def load_targets(path: Path) -> ScrapeConfig:
     """Load and validate the scrape configuration from a YAML file."""
     if not path.exists():
-        raise ConfigurationError(
-            "Scrape targets file not found.", details={"path": str(path)}
-        )
+        raise ConfigurationError("Scrape targets file not found.", details={"path": str(path)})
     try:
         data = yaml.safe_load(path.read_text()) or {}
     except yaml.YAMLError as exc:

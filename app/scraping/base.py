@@ -85,9 +85,7 @@ class BaseScraper(abc.ABC):
     ) -> None:
         self.target = target
         self.settings = settings or get_settings()
-        self.rate_limiter = rate_limiter or RateLimiter(
-            self.settings.scrape_request_delay_seconds
-        )
+        self.rate_limiter = rate_limiter or RateLimiter(self.settings.scrape_request_delay_seconds)
         self._robots: dict[str, robotparser.RobotFileParser] = {}
 
     @abc.abstractmethod

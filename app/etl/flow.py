@@ -48,9 +48,7 @@ except ImportError:  # pragma: no cover - fallback path in minimal envs
 
 
 @_prefect_task(name="etl-extract")
-def extract_task(
-    source: DataSource | None, settings: Settings
-) -> ExtractedData:
+def extract_task(source: DataSource | None, settings: Settings) -> ExtractedData:
     """Prefect task wrapping the extraction stage."""
     return extract(source, settings=settings)
 
@@ -62,15 +60,11 @@ def transform_task(
     default_stay_date: date | None,
 ) -> TransformedData:
     """Prefect task wrapping the transformation stage."""
-    return transform(
-        extracted, settings=settings, default_stay_date=default_stay_date
-    )
+    return transform(extracted, settings=settings, default_stay_date=default_stay_date)
 
 
 @_prefect_task(name="etl-load")
-def load_task(
-    transformed: TransformedData, settings: Settings, persist_to_db: bool
-) -> LoadResult:
+def load_task(transformed: TransformedData, settings: Settings, persist_to_db: bool) -> LoadResult:
     """Prefect task wrapping the load stage."""
     return load(transformed, settings=settings, persist_to_db=persist_to_db)
 

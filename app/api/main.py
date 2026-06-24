@@ -92,9 +92,7 @@ def create_app() -> FastAPI:
 
     # Exception handlers -> uniform ErrorResponse.
     @app.exception_handler(PricingSystemError)
-    async def _handle_domain_error(
-        request: Request, exc: PricingSystemError
-    ) -> JSONResponse:
+    async def _handle_domain_error(request: Request, exc: PricingSystemError) -> JSONResponse:
         body = ErrorResponse(
             code=exc.code,
             message=exc.message,
@@ -120,9 +118,7 @@ def create_app() -> FastAPI:
         return JSONResponse(status_code=422, content=body.model_dump())
 
     @app.exception_handler(Exception)
-    async def _handle_unexpected_error(
-        request: Request, exc: Exception
-    ) -> JSONResponse:
+    async def _handle_unexpected_error(request: Request, exc: Exception) -> JSONResponse:
         logger.exception("unhandled error: {}", exc)
         body = ErrorResponse(
             code="internal_error",

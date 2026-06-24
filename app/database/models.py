@@ -64,9 +64,7 @@ class PriceObservation(Base, TimestampMixin):
     """A historical own-rate observation."""
 
     __tablename__ = "price_observations"
-    __table_args__ = (
-        Index("ix_prices_lookup", "hotel_id", "room_type", "stay_date"),
-    )
+    __table_args__ = (Index("ix_prices_lookup", "hotel_id", "room_type", "stay_date"),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     hotel_id: Mapped[str] = mapped_column(String(64), nullable=False)
@@ -81,9 +79,7 @@ class OccupancySnapshot(Base, TimestampMixin):
     """Occupancy and booking pace as of a moment in time."""
 
     __tablename__ = "occupancy_snapshots"
-    __table_args__ = (
-        Index("ix_occ_lookup", "hotel_id", "room_type", "stay_date"),
-    )
+    __table_args__ = (Index("ix_occ_lookup", "hotel_id", "room_type", "stay_date"),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     hotel_id: Mapped[str] = mapped_column(String(64), nullable=False)
@@ -100,9 +96,7 @@ class Inventory(Base, TimestampMixin):
 
     __tablename__ = "inventory"
     __table_args__ = (
-        UniqueConstraint(
-            "hotel_id", "room_type", "stay_date", name="uq_inventory_slot"
-        ),
+        UniqueConstraint("hotel_id", "room_type", "stay_date", name="uq_inventory_slot"),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
@@ -116,9 +110,7 @@ class CompetitorRate(Base, TimestampMixin):
     """A cleaned competitor rate."""
 
     __tablename__ = "competitor_rates"
-    __table_args__ = (
-        Index("ix_comp_lookup", "room_type", "stay_date"),
-    )
+    __table_args__ = (Index("ix_comp_lookup", "room_type", "stay_date"),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     source: Mapped[str] = mapped_column(String(64), nullable=False)
@@ -128,9 +120,7 @@ class CompetitorRate(Base, TimestampMixin):
     price: Mapped[float] = mapped_column(Float, nullable=False)
     currency: Mapped[str] = mapped_column(String(3), default="USD", nullable=False)
     stay_date: Mapped[date] = mapped_column(Date, nullable=False)
-    scraped_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), nullable=False
-    )
+    scraped_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
 
 class Event(Base, TimestampMixin):
@@ -151,9 +141,7 @@ class Holiday(Base, TimestampMixin):
     """A public or observed holiday."""
 
     __tablename__ = "holidays"
-    __table_args__ = (
-        UniqueConstraint("holiday_date", "country", name="uq_holiday_day"),
-    )
+    __table_args__ = (UniqueConstraint("holiday_date", "country", name="uq_holiday_day"),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(128), nullable=False)
@@ -167,9 +155,7 @@ class Recommendation(Base, TimestampMixin):
     """A pricing recommendation emitted by the engine, for audit/history."""
 
     __tablename__ = "recommendations"
-    __table_args__ = (
-        Index("ix_reco_lookup", "hotel_id", "room_type", "stay_date"),
-    )
+    __table_args__ = (Index("ix_reco_lookup", "hotel_id", "room_type", "stay_date"),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     hotel_id: Mapped[str] = mapped_column(String(64), nullable=False)
@@ -183,9 +169,7 @@ class Recommendation(Base, TimestampMixin):
     effective_floor: Mapped[float] = mapped_column(Float, nullable=False)
     effective_ceiling: Mapped[float] = mapped_column(Float, nullable=False)
     price_change_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
-    manual_override_applied: Mapped[bool] = mapped_column(
-        Boolean, default=False, nullable=False
-    )
+    manual_override_applied: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     model_version: Mapped[str] = mapped_column(String(64), nullable=False)
     explanation: Mapped[str | None] = mapped_column(String(2048), nullable=True)
     generated_at: Mapped[datetime] = mapped_column(
@@ -201,9 +185,7 @@ class ModelRun(Base, TimestampMixin):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     version: Mapped[str] = mapped_column(String(64), nullable=False)
-    trained_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), nullable=False
-    )
+    trained_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     rmse: Mapped[float] = mapped_column(Float, nullable=False)
     mae: Mapped[float] = mapped_column(Float, nullable=False)
     r2: Mapped[float] = mapped_column(Float, nullable=False)

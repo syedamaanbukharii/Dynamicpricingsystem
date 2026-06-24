@@ -86,9 +86,7 @@ class LLMClient:
                 model=self.settings.anthropic_model,
                 max_tokens=max_tokens or self.settings.anthropic_max_tokens,
                 temperature=(
-                    temperature
-                    if temperature is not None
-                    else self.settings.anthropic_temperature
+                    temperature if temperature is not None else self.settings.anthropic_temperature
                 ),
                 system=system,
                 messages=[{"role": "user", "content": user}],

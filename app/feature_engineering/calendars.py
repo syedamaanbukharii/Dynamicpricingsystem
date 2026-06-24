@@ -12,10 +12,18 @@ from app.schemas.common import Season
 from app.schemas.events import Holiday, LocalEvent
 
 _SEASON_BY_MONTH: dict[int, Season] = {
-    12: Season.WINTER, 1: Season.WINTER, 2: Season.WINTER,
-    3: Season.SPRING, 4: Season.SPRING, 5: Season.SPRING,
-    6: Season.SUMMER, 7: Season.SUMMER, 8: Season.SUMMER,
-    9: Season.AUTUMN, 10: Season.AUTUMN, 11: Season.AUTUMN,
+    12: Season.WINTER,
+    1: Season.WINTER,
+    2: Season.WINTER,
+    3: Season.SPRING,
+    4: Season.SPRING,
+    5: Season.SPRING,
+    6: Season.SUMMER,
+    7: Season.SUMMER,
+    8: Season.SUMMER,
+    9: Season.AUTUMN,
+    10: Season.AUTUMN,
+    11: Season.AUTUMN,
 }
 
 

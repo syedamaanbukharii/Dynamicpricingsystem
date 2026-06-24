@@ -46,9 +46,7 @@ def _target() -> ScrapeTarget:
         competitor="Fake Hotel",
         base_url="https://example.com",
         search_url_template="https://example.com/search?d={stay_date}",
-        selectors=ScrapeSelectors(
-            listing="div.room", room_name="span.name", price="span.price"
-        ),
+        selectors=ScrapeSelectors(listing="div.room", room_name="span.name", price="span.price"),
         requires_javascript=False,
     )
 

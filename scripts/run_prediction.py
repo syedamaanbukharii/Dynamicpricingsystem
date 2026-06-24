@@ -48,15 +48,11 @@ def main() -> None:
         default="",
         help="Comma-separated competitor nightly rates, e.g. 175,189,205.",
     )
-    parser.add_argument(
-        "--velocity", type=float, default=None, help="Recent bookings/day pace."
-    )
+    parser.add_argument("--velocity", type=float, default=None, help="Recent bookings/day pace.")
     args = parser.parse_args()
 
     competitors = (
-        [float(x) for x in args.competitors.split(",") if x.strip()]
-        if args.competitors
-        else None
+        [float(x) for x in args.competitors.split(",") if x.strip()] if args.competitors else None
     )
 
     request = PriceRecommendationRequest(
